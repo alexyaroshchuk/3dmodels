@@ -6,12 +6,8 @@ var XXX = new THREE.Vector3(1,0,0);
 var YYY = new THREE.Vector3(0,1,0);
 var ZZZ = new THREE.Vector3(0,0,1);
 var directXXX = '', directYYY = '', directZZZ = '';
-// instantiate a loader
-
 var cordX = 0, cordY = 0, cordZ = 0;
 var cordrotX = 0, cordrotY = 0, cordrotZ = 0;
-
-// load a resource
  
  var Colors = {
     red: 0x7A1D0A,
