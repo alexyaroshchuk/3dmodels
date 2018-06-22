@@ -1,0 +1,233 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body {
+                background-color: #000;
+                margin: 0px;
+                overflow: hidden;
+            }
+		</style>
+	</head>
+	<body>
+	
+		<script src="https://threejs.org/build/three.min.js"></script>
+            <script src="https://threejs.org/examples/js/controls/TrackballControls.js"></script>
+        <script>
+
+            var renderer, scene, camera, controls;
+
+            init();
+            animate();
+            // instantiate a loader
+
+            // load a resource
+            
+            function addLight(){
+                hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9);
+
+                directionalLight = new THREE.DirectionalLight(0xffffff, .9);
+
+                directionalLight.position.set(150, 350, 350);
+                directionalLight.castShadow = true;
+                directionalLight.shadow.camera.left = -400;
+                directionalLight.shadow.camera.right = 400;
+                directionalLight.shadow.camera.top = 400;
+                directionalLight.shadow.camera.bottom = -400;
+                directionalLight.shadow.camera.near = 1;
+                directionalLight.shadow.camera.far = 1000;
+
+                directionalLight.shadow.mapSize.width = 2048;
+                directionalLight.shadow.mapSize.height = 2048;
+
+                scene.add(hemisphereLight);  
+                scene.add(directionalLight);
+            }
+            function init() {
+                renderer = new THREE.WebGLRenderer();
+                renderer.setPixelRatio( window.devicePixelRatio );
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
+
+                // scene
+                scene = new THREE.Scene();
+
+                // camera
+                camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+                camera.position.set( 0, 0, 80 );
+
+                // controls
+                controls = new THREE.TrackballControls(camera, renderer.domElememnt);
+
+                var axis = new THREE.AxisHelper(300);
+                scene.add(axis);
+                var grid = new THREE.GridHelper(300, 20);
+                var color = new THREE.Color("rgb(0,0,0)");
+                grid.setColors(color, 0xffffff);
+                scene.add(grid);
+
+                //var light = new THREE.AmbientLight(0xffffff);
+                //scene.add(light);
+                
+                addLight();
+                //body
+                var geometry = new THREE.SphereGeometry(50, 20, 20);
+                var material = new THREE.MeshLambertMaterial({color: 0xD8CDFC});
+                var mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(0, 60, 0)
+                scene.add(mesh);
+                
+                //left leg
+                geometry = new THREE.SphereGeometry(15, 20, 20, 0, Math.PI*2, 0, Math.PI/2);
+                material = new THREE.MeshLambertMaterial({color: 0xD8CDFC});
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(-20, 0, 0)
+                scene.add(mesh);
+                
+                //right leg
+                geometry = new THREE.SphereGeometry(15, 20, 20, 0, Math.PI*2, 0, Math.PI/2);
+                material = new THREE.MeshLambertMaterial({color: 0xD8CDFC});
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(20, 0, 0)
+                scene.add(mesh);
+                
+                //left ear
+                var shape = new THREE.Shape();
+                shape.moveTo(0, 0);
+                shape.bezierCurveTo( -50, 180, -80, 0, 0, 0 );
+                var extrudeSettings = { amount: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+                geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+                mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({color:0xD8CDFC}) );
+                mesh.position.set(0, 100, 0);
+                scene.add(mesh);
+                
+                //right ear
+                var shape = new THREE.Shape();
+                shape.moveTo(0, 0);
+                shape.bezierCurveTo( 50, 180, 80, 0, 0, 0 );
+                var extrudeSettings = { amount: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+                geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+                mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({color:0xD8CDFC}) );
+                mesh.position.set(0, 100, 0);
+                scene.add(mesh);
+                
+                //left eye
+                geometry = new THREE.SphereGeometry(13, 20, 20,);
+                material = new THREE.MeshLambertMaterial( {color: 0xffffff} );
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(-13, 75, 40)
+                scene.add( mesh );
+                geometry = new THREE.SphereGeometry(5, 10, 10,);
+                material = new THREE.MeshLambertMaterial( {color: 0x000000} );
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(-13, 75, 51)
+                scene.add( mesh );
+                geometry = new THREE.SphereGeometry(2, 5, 5,);
+                material = new THREE.MeshLambertMaterial( {color: 0xffffff} );
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(-12, 76, 54)
+                scene.add( mesh );
+                
+                //right eye
+                geometry = new THREE.SphereGeometry(13, 20, 20,);
+                material = new THREE.MeshLambertMaterial( {color: 0xffffff} );
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(13, 75, 40)
+                scene.add( mesh );
+                geometry = new THREE.SphereGeometry(5, 20, 20,);
+                material = new THREE.MeshLambertMaterial( {color: 0x000000} );
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(13, 75, 51)
+                scene.add( mesh );
+                geometry = new THREE.SphereGeometry(2, 5, 5,);
+                material = new THREE.MeshLambertMaterial( {color: 0xffffff} );
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(14, 76, 54)
+                scene.add( mesh );
+                
+                //nose
+                geometry = new THREE.SphereGeometry(5, 10, 10,);
+                material = new THREE.MeshLambertMaterial( {color: 0x000000} );
+                mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(0, 70, 50)
+                scene.add( mesh );
+                
+                //mouth
+                                
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(new THREE.Vector3( -25, 55, 43) );
+                geometry.vertices.push(new THREE.Vector3( -20, 54, 46) );
+                geometry.vertices.push(new THREE.Vector3( -15, 53, 48) );
+                geometry.vertices.push(new THREE.Vector3( -10, 52, 49) );
+                geometry.vertices.push(new THREE.Vector3( -5, 52, 49) );
+                geometry.vertices.push(new THREE.Vector3( 0, 52, 50) );
+                geometry.vertices.push(new THREE.Vector3( 5, 52, 50) );
+                geometry.vertices.push(new THREE.Vector3( 10, 52, 49) );
+                geometry.vertices.push(new THREE.Vector3( 15, 53, 48) );
+                geometry.vertices.push(new THREE.Vector3( 20, 54, 46) );
+                geometry.vertices.push(new THREE.Vector3( 25, 55, 43) );
+                material = new THREE.LineBasicMaterial( { color: 0x000000 } )
+                var line = new THREE.Line( geometry, material );
+                scene.add( line );
+                
+                //left teath
+                //shape = new THREE.Shape();
+                //shape.moveTo(-10, 0);
+                //shape.lineTo(-10, 11);
+                //shape.lineTo(-1, 10);
+                //shape.lineTo(-1, 0);
+                //extrudeSettings = { amount: 8, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 1, bevelThickness: 1 };
+                //geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+                //mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial() );
+                //mesh.position.set(0, 46, 42);
+                //scene.add(mesh);
+                
+                //right teath
+                //shape = new THREE.Shape();
+                //shape.moveTo(12, -3);
+                //shape.lineTo(12, 11);
+                //shape.lineTo(1, 10);
+                //shape.lineTo(1, -3);
+                //extrudeSettings = { amount: 8, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 1, bevelThickness: 1 };
+                //geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+                //mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial() );
+                //mesh.position.set(1, 46, 42);
+                //scene.add(mesh);
+                
+                //left hand
+                geometry = new THREE.SphereGeometry(15, 20, 20, 0, Math.PI*2, 0, Math.PI);
+                material = new THREE.MeshLambertMaterial({color: 0xD8CDFC});
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(-50, 60, 0)
+                scene.add(mesh);
+
+                //rigft hand
+                geometry = new THREE.SphereGeometry(15, 30, 20, 0, Math.PI*2, 0, Math.PI);
+                material = new THREE.MeshLambertMaterial({color: 0xD8CDFC});
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(50, 60, 0)
+                scene.add(mesh);
+                
+            }
+
+            
+            // render
+            function render() {
+
+                renderer.render( scene, camera );
+
+            }
+
+            // animate
+            function animate() {
+
+                requestAnimationFrame( animate );
+
+
+                controls.update();
+                render();
+
+            }
+        </script>
+	</body>
+</html>

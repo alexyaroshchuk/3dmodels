@@ -1,0 +1,177 @@
+<html>
+	<head>
+		<title>My first three.js app</title>
+		<style>
+			body {
+                background-color: #000;
+                margin: 0px;
+                overflow: hidden;
+            }
+		</style>
+	</head>
+	<body>
+	
+        <script src="https://threejs.org/build/three.min.js"></script>
+        <script src="https://threejs.org/examples/js/controls/TrackballControls.js"></script>
+        <script>
+
+            var renderer, scene, camera, controls;
+
+            init();
+            animate();
+            // instantiate a loader
+
+            // load a resource
+            
+            function addLight(){
+                hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9);
+
+                directionalLight = new THREE.DirectionalLight(0xffffff, .9);
+
+                directionalLight.position.set(150, 350, 350);
+                directionalLight.castShadow = true;
+                directionalLight.shadow.camera.left = -400;
+                directionalLight.shadow.camera.right = 400;
+                directionalLight.shadow.camera.top = 400;
+                directionalLight.shadow.camera.bottom = -400;
+                directionalLight.shadow.camera.near = 1;
+                directionalLight.shadow.camera.far = 1000;
+
+                directionalLight.shadow.mapSize.width = 2048;
+                directionalLight.shadow.mapSize.height = 2048;
+
+                scene.add(hemisphereLight);  
+                scene.add(directionalLight);
+            }
+            function init() {
+                renderer = new THREE.WebGLRenderer();
+                renderer.setPixelRatio( window.devicePixelRatio );
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
+
+                // scene
+                scene = new THREE.Scene();
+
+                // camera
+                camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+                camera.position.set( 0, 0, 80 );
+
+                // controls
+                controls = new THREE.TrackballControls(camera, renderer.domElememnt);
+
+                var axis = new THREE.AxisHelper(300);
+                scene.add(axis);
+                var grid = new THREE.GridHelper(300, 20);
+                var color = new THREE.Color("rgb(0,0,0)");
+                grid.setColors(color, 0xffffff);
+                scene.add(grid);
+
+                //var light = new THREE.AmbientLight(0xffffff);
+                //scene.add(light);
+                
+                addLight();
+                
+                //body
+                var geometry = new THREE.BoxGeometry(50, 50, 50);
+                var material = new THREE.MeshLambertMaterial({color: 0xF7F8E0});
+                var mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(0, 25, 0)
+                scene.add(mesh);
+                
+                //roof
+                var geometry = new THREE.ConeGeometry(40, 15, 4, 1, false, 2.4, Math.PI*2);
+                var material = new THREE.MeshLambertMaterial({color: 0xFF8000});
+                var mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(0, 57, 0)
+                scene.add(mesh);
+                
+                
+                //Труба
+                
+                var geometry = new THREE.CylinderGeometry( 5, 5, 15, 4, 1, false, 2.4, Math.PI*2);
+                var material = new THREE.MeshBasicMaterial( {color: 0xFF8000} );
+                var mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(20, 55, 0)
+                scene.add( mesh );
+                
+                //grace
+                //var geometry = new THREE.CircleGeometry( 50, 128, 3.5, Math.PI*2);
+                //var material = new THREE.MeshBasicMaterial( { color: 0x46F60B } );
+                //var mesh = new THREE.Mesh( geometry, material );
+                //mesh.position.set(0, 0, 0)
+                //scene.add( mesh );
+                
+                //window
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(new THREE.Vector3( -10, 25, 25) );
+                geometry.vertices.push(new THREE.Vector3( -22, 25, 25) );
+                geometry.vertices.push(new THREE.Vector3( -22, 40, 25) );
+                geometry.vertices.push(new THREE.Vector3( -10, 40, 25) );
+                geometry.vertices.push(new THREE.Vector3( -10, 25, 25) );
+                material = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 4 } )
+                var line = new THREE.Line( geometry, material );
+                scene.add( line );
+                
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(new THREE.Vector3(-15.9, 40, 25));
+                geometry.vertices.push(new THREE.Vector3(-15.9, 25, 25));
+                material = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 2 } )
+                var line = new THREE.Line( geometry, material );
+                scene.add( line );
+                
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(new THREE.Vector3(-10, 32.6, 25));
+                geometry.vertices.push(new THREE.Vector3(-22, 32.6, 25));
+                material = new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 2 } )
+                var line = new THREE.Line( geometry, material );
+                scene.add( line );
+                
+                //штора
+                var geometry = new THREE.CircleGeometry(8, 32, 9.42, Math.PI/2);
+                var material = new THREE.MeshBasicMaterial( { color: 0x380B61 } );
+                var mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(-10, 40, 25.1)
+                scene.add( mesh );
+                
+                var geometry = new THREE.CircleGeometry(8, 32, 4.71, Math.PI/2);
+                var material = new THREE.MeshBasicMaterial( { color: 0xAC58FA } );
+                var mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(-22, 40, 25.1)
+                scene.add( mesh );
+                
+                
+                //door
+                var geometry = new THREE.BoxGeometry(15, 25, 1);
+                var material = new THREE.MeshLambertMaterial({color: 0x8A4B08});
+                var mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(10, 12.5, 25)
+                scene.add(mesh);
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(new THREE.Vector3(5, 12, 25.5));
+                geometry.vertices.push(new THREE.Vector3(5, 8, 25.5));
+                material = new THREE.LineBasicMaterial( { color: 0x2A120A, linewidth: 5} )
+                var line = new THREE.Line( geometry, material );
+                scene.add( line );
+            }
+
+            
+            // render
+            function render() {
+
+                renderer.render( scene, camera );
+
+            }
+
+            // animate
+            function animate() {
+
+                requestAnimationFrame( animate );
+
+
+                controls.update();
+                render();
+
+            }
+        </script>
+	</body>
+</html>
